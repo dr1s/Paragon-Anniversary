@@ -21,6 +21,7 @@ static float _skipQualityMaxChance = 0.50f;
 static bool _limitLegendarySkipChance = false;
 static float _legendarySkipMaxChance = 0.10f;
 static uint8 _maxQuality = 5;
+static bool _excludeTestItems = true;
 
 void LoadParagonLootConfig()
 {
@@ -39,6 +40,7 @@ void LoadParagonLootConfig()
     _skipQualityMaxChance = sConfigMgr->GetOption<float>("ParagonLoot.SkipQualityMaxChance", 0.50f);
     _limitLegendarySkipChance = sConfigMgr->GetOption<bool>("ParagonLoot.LimitLegendarySkipChance", false);
     _legendarySkipMaxChance = sConfigMgr->GetOption<float>("ParagonLoot.LegendarySkipMaxChance", 0.10f);
+    _excludeTestItems = sConfigMgr->GetOption<bool>("ParagonLoot.ExcludeTestItems", true);
 }
 
 ParagonLootScript::ParagonLootScript()
@@ -65,6 +67,10 @@ uint32 ParagonLootScript::FindHigherQualityItem(uint32 itemId, uint8 currentQual
 
     uint32 classMask = (1u << (playerClass - 1));
 
+    const char* testFilter = _excludeTestItems
+        ? "AND name NOT REGEXP '(?i)\\\\btest\\\\b|critical testing|testboots|qatest|qaenchant|qaenchhelp|jefftest|zzold|\\\\bdebug\\\\b|\\\\blevel\\\\b|\\\\blvl\\\\b|\\\\bdeprecated\\\\b|monster - |\\\\[PH\\\\]' "
+        : "";
+
     if (_generalizeUpgrade)
     {
         QueryResult result = WorldDatabase.Query(
@@ -72,11 +78,12 @@ uint32 ParagonLootScript::FindHigherQualityItem(uint32 itemId, uint8 currentQual
             "WHERE Quality = {} AND {} BETWEEN {} AND {} "
             "AND entry != {} "
             "AND (AllowableClass = 0 OR AllowableClass & {}) "
+            "{}"
             "ORDER BY RAND() "
             "LIMIT 1",
             targetQuality, levelColumn,
             searchLevel - _itemLevelTolerance, searchLevel + _itemLevelTolerance,
-            itemId, classMask
+            itemId, classMask, testFilter
         );
 
         if (result)
@@ -94,11 +101,12 @@ uint32 ParagonLootScript::FindHigherQualityItem(uint32 itemId, uint8 currentQual
             "AND InventoryType = {} AND {} BETWEEN {} AND {} "
             "AND entry != {} "
             "AND (AllowableClass = 0 OR AllowableClass & {}) "
+            "{}"
             "ORDER BY ABS({} - {}) ASC "
             "LIMIT 1",
             targetQuality, itemClass, itemSubClass, inventoryType,
             levelColumn, searchLevel - _itemLevelTolerance, searchLevel + _itemLevelTolerance,
-            itemId, classMask, levelColumn, searchLevel
+            itemId, classMask, testFilter, levelColumn, searchLevel
         );
 
         if (result)
