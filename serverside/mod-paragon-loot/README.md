@@ -49,6 +49,7 @@ Edit `etc/mod-paragon-loot.conf`:
 | `ParagonLoot.MaxChance` | 0.51 | Maximum upgrade chance (51%) |
 | `ParagonLoot.ItemLevelTolerance` | 5 | Level range for upgrade search (+/-) |
 | `ParagonLoot.MaxQuality` | 5 | Max quality (5 = Legendary) |
+| `ParagonLoot.ExcludeTestItems` | 1 | Exclude test/QA/developer items from upgrade targets |
 
 ### Search Level Mode
 
@@ -89,6 +90,10 @@ These options control what level is used as the base for the upgrade search rang
    - **GeneralizeUpgrade mode**: Any item of the target quality within the level range
     - Level range is determined by the active search level mode (player level, mob level, required level, or item level)
 5. Replaces the dropped itemid with the upgraded version
+
+### Test Item Exclusion
+
+When `ExcludeTestItems` is enabled (default), the upgrade search filters out items whose names match common test/QA/developer patterns. The filter is applied via a MariaDB/MySQL `REGEXP` on `item_template.name` and catches names containing whole-word `test`, `debug`, `level`, or `lvl`, plus `critical testing`, `testboots`, `qatest`, `qaenchant`, `qaenchhelp`, `jefftest`, `zzold`, `deprecated`, `monster - `, and `[PH]` (case-insensitive). This prevents accidentally upgrading creature loot into internal test gear, deprecated items, NPC visuals, or placeholders.
 
 ### Search Level Priority
 

@@ -61,3 +61,8 @@ ParagonLoot.LegendarySkipMaxChance = 0.10
 # Maximum quality (5 = Legendary, items at this quality won't be upgraded)
 ParagonLoot.MaxQuality = 5
 
+# Exclude test/QA/developer items from upgrade targets
+# When 1 (default), items with names matching test/QA patterns are never selected
+# When 0, test items may be chosen as upgrades
+ParagonLoot.ExcludeTestItems = 1
+
