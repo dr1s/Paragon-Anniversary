@@ -68,7 +68,7 @@ uint32 ParagonLootScript::FindHigherQualityItem(uint32 itemId, uint8 currentQual
     uint32 classMask = (1u << (playerClass - 1));
 
     const char* testFilter = _excludeTestItems
-        ? "AND name NOT REGEXP '(?i)\\\\btest\\\\b|critical testing|testboots|qatest|qaenchant|qaenchhelp|jefftest|zzold|\\\\bdebug\\\\b|\\\\blevel\\\\b|\\\\blvl\\\\b|\\\\bdeprecated\\\\b|monster - |\\\\[PH\\\\]' "
+        ? "AND name NOT REGEXP '(?i)\\\\btest\\\\b|critical testing|testboots|qatest|qaenchant|qaenchhelp|jefftest|zzold|\\\\bdebug\\\\b|\\\\blevel\\\\b|\\\\blvl\\\\b|\\\\bdeprecated\\\\b|zzdeprecated|monster - |\\\\[PH\\\\]|\\\\[UNUSED\\\\]|\\\\[TDB PH\\\\]|\\\\(OLD\\\\)|DO NOT USE|DO NOT LOCALIZE|DO NOT DELETE|DO NOT TRADE|^Internal |^NPC Equip [0-9]+|^[0-9]+ (Epic|Green|Blue|Rare|Legendary|Common|Uncommon) ' "
         : "";
 
     if (_generalizeUpgrade)

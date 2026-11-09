@@ -93,7 +93,7 @@ These options control what level is used as the base for the upgrade search rang
 
 ### Test Item Exclusion
 
-When `ExcludeTestItems` is enabled (default), the upgrade search filters out items whose names match common test/QA/developer patterns. The filter is applied via a MariaDB/MySQL `REGEXP` on `item_template.name` and catches names containing whole-word `test`, `debug`, `level`, or `lvl`, plus `critical testing`, `testboots`, `qatest`, `qaenchant`, `qaenchhelp`, `jefftest`, `zzold`, `deprecated`, `monster - `, and `[PH]` (case-insensitive). This prevents accidentally upgrading creature loot into internal test gear, deprecated items, NPC visuals, or placeholders.
+When `ExcludeTestItems` is enabled (default), the upgrade search filters out items whose names match common test/QA/developer patterns. The filter is applied via a MariaDB/MySQL `REGEXP` on `item_template.name` and catches names containing whole-word `test`, `debug`, `level`, or `lvl`, plus `critical testing`, `testboots`, `qatest`, `qaenchant`, `qaenchhelp`, `jefftest`, `zzold`, `deprecated`, `zzdeprecated`, `monster - `, `[PH]`, `[UNUSED]`, `[TDB PH]`, `(OLD)`, `DO NOT USE/LOCALIZE/DELETE/TRADE`, items starting with `Internal ` or `NPC Equip `, and numbered quality/class templates like `90 Epic Warrior Belt` (case-insensitive). This prevents accidentally upgrading creature loot into internal test gear, deprecated items, NPC visuals, placeholders, obsolete gear, or NPC equipment.
 
 ### Search Level Priority
 
